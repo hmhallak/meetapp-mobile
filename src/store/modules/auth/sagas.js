@@ -22,7 +22,7 @@ export function* signIn({ payload }) {
 
     // history.push('/dashboard');
   } catch (err) {
-    Alert(
+    Alert.alert(
       'Falha na autenticação',
       'Houve um erro no login, verifique seus dados.',
     );
@@ -41,9 +41,9 @@ export function* signUp({ payload }) {
     });
 
     // history.push('/');
-    Alert('Sucesso', 'A sua conta foi criada!');
+    Alert.alert('Sucesso', 'A sua conta foi criada!');
   } catch (err) {
-    Alert(
+    Alert.alert(
       'Falha na autenticação',
       'Houve um erro no login, verifique seus dados.',
     );

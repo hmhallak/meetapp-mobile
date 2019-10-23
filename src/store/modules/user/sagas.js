@@ -11,19 +11,16 @@ export function* updateProfile({ payload }) {
 
     const profile = Object.assign(
       { name, email, avatar_id },
-      rest.oldPassword ? rest : {}
+      rest.oldPassword ? rest : {},
     );
 
     const response = yield call(api.put, 'users', profile);
 
-    Alert(
-      'Sucesso!',
-      'Perfil atualizado com sucesso.',
-    );
+    Alert.alert('Sucesso!', 'Perfil atualizado com sucesso.');
 
     yield put(updateProfileSuccess(response.data));
   } catch (err) {
-    Alert(
+    Alert.alert(
       'Falha na atualização',
       'Erro ao atualizar perfil, confira seus dados!',
     );
