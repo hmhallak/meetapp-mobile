@@ -15,7 +15,6 @@ export function* signIn({ payload }) {
     });
 
     const { token, user } = response.data;
-
     yield put(signInSuccess(token, user));
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
@@ -44,8 +43,8 @@ export function* signUp({ payload }) {
     Alert.alert('Sucesso', 'A sua conta foi criada!');
   } catch (err) {
     Alert.alert(
-      'Falha na autenticação',
-      'Houve um erro no login, verifique seus dados.',
+      'Falha no cadastro',
+      'Houve um erro ao criar a sua conta, verifique seus dados.',
     );
 
     yield put(signFailure());
