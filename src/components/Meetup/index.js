@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { parseISO, formatRelative } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {
@@ -11,27 +13,43 @@ import {
   SubscribeButton,
 } from './styles';
 
-export default function Meetup() {
+export default function Meetup({ data, onSubscribe }) {
+  const dateParsed = useMemo(() => {
+    return formatRelative(parseISO(data.date), new Date(), {
+      locale: pt,
+      addSuffix: true,
+    });
+  }, [data.date]);
+
   return (
-    <Container>
-      <Banner source={{ uri: 'https://picsum.photos/seed/picsum/470/150' }} />
+    <Container past={data.past}>
+      <Banner
+        source={{
+          uri: data.banner
+            ? data.banner.url
+            : `https://picsum.photos/seed/${data.user.name}/470/150`,
+        }}
+      />
       <Content>
-        <Title>Meetup de React Native</Title>
+        <Title>{data.title}</Title>
         <Info>
           <Icon name="event" size={20} color="#999" />
-          <InfoText>24 de Novembro, às 20h</InfoText>
+          <InfoText>{dateParsed}</InfoText>
         </Info>
         <Info>
           <Icon name="place" size={20} color="#999" />
-          <InfoText>Cuiabá, MT</InfoText>
+          <InfoText>{data.location}</InfoText>
         </Info>
 
         <Info>
           <Icon name="person" size={20} color="#999" />
-          <InfoText>Organizador: Hussein Hallak</InfoText>
+          <InfoText>Organizador: {data.user.name}</InfoText>
         </Info>
-
-        <SubscribeButton>Realizar inscrição</SubscribeButton>
+        {!data.past ? (
+          <SubscribeButton onPress={onSubscribe}>
+            Realizar inscrição
+          </SubscribeButton>
+        ) : null}
       </Content>
     </Container>
   );

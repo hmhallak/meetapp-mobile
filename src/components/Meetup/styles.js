@@ -9,6 +9,8 @@ export const Container = styled.View`
 
   display: flex;
   flex-direction: column;
+
+  opacity: ${props => (props.past ? 0.6 : 1)};
 `;
 
 export const Banner = styled.Image`
