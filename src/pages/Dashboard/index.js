@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { withNavigationFocus } from 'react-navigation';
+
 import api from '~/services/api';
 
 import Background from '~/components/Background';
@@ -8,18 +10,20 @@ import Meetup from '~/components/Meetup';
 
 import { Container, List } from './styles';
 
-export default function Dashboard() {
+function Dashboard({ isFocused }) {
   const [meetups, setMeetups] = useState([]);
 
+  async function loadMeetups() {
+    const response = await api.get('meetups');
+
+    setMeetups(response.data);
+  }
+
   useEffect(() => {
-    async function loadMeetups() {
-      const response = await api.get('meetups');
-
-      setMeetups(response.data);
+    if (isFocused) {
+      loadMeetups();
     }
-
-    loadMeetups();
-  }, []);
+  }, [isFocused]);
 
   async function handleSubscribe(id) {
     try {
@@ -54,3 +58,5 @@ Dashboard.navigationOptions = {
     <Icon name="local-offer" size={20} color={tintColor} />
   ),
 };
+
+export default withNavigationFocus(Dashboard);
