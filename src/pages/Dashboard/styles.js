@@ -14,6 +14,7 @@ export const Day = styled.View`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+  margin-bottom: 15px;
 `;
 
 export const DayText = styled.Text`

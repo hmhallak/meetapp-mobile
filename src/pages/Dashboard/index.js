@@ -84,7 +84,7 @@ function Dashboard({ isFocused }) {
 Dashboard.navigationOptions = {
   tabBarLabel: 'Meetups',
   tabBarIcon: ({ tintColor }) => (
-    <Icon name="local-offer" size={20} color={tintColor} />
+    <Icon name="format-list-bulleted" size={20} color={tintColor} />
   ),
 };
 
