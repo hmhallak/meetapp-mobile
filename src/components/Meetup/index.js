@@ -14,7 +14,7 @@ import {
   SubscribeButton,
 } from './styles';
 
-export default function Meetup({ data, onSubscribe }) {
+export default function Meetup({ data, onSubscribe, onCancel, subscription }) {
   const dateParsed = useMemo(() => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const date = utcToZonedTime(data.date, timezone);
@@ -49,11 +49,11 @@ export default function Meetup({ data, onSubscribe }) {
           <Icon name="person" size={20} color="#999" />
           <InfoText>Organizador: {data.user.name}</InfoText>
         </Info>
-        {!data.past ? (
-          <SubscribeButton onPress={onSubscribe}>
-            Realizar inscrição
+        {!data.past && (
+          <SubscribeButton onPress={!subscription ? onSubscribe : onCancel}>
+            {subscription ? 'Cancelar Inscrição' : 'Realizar inscrição'}
           </SubscribeButton>
-        ) : null}
+        )}
       </Content>
     </Container>
   );
