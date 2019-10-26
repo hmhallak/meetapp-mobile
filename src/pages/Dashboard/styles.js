@@ -8,3 +8,18 @@ export const List = styled.FlatList.attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: { padding: 30 },
 })``;
+
+export const Day = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+export const DayText = styled.Text`
+  font-size: 24;
+  color: #fff;
+  align-self: center;
+  font-weight: bold;
+  margin: 0 10px;
+`;

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { parseISO, formatRelative } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import pt from 'date-fns/locale/pt';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -15,11 +16,14 @@ import {
 
 export default function Meetup({ data, onSubscribe }) {
   const dateParsed = useMemo(() => {
-    return formatRelative(parseISO(data.date), new Date(), {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const date = utcToZonedTime(data.date, timezone);
+
+    return formatRelative(date, new Date(), {
       locale: pt,
       addSuffix: true,
     });
-  }, [data.date]);
+  }, [data]);
 
   return (
     <Container past={data.past}>
