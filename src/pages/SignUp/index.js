@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Image } from 'react-native';
+import PropTypes from 'prop-types';
+import { Alert, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
 
 import logo from '~/assets/logo.png';
 
@@ -16,6 +18,16 @@ import {
   SignLinkText,
 } from './styles';
 
+const schema = Yup.object().shape({
+  name: Yup.string().required('O nome é obrigatório'),
+  email: Yup.string()
+    .email('Insira um e-mail válido.')
+    .required('O e-mail é obrigatório.'),
+  password: Yup.string()
+    .min(6, 'No mínimo 6 caracteres')
+    .required('A senha é obrigatória.'),
+});
+
 export default function SignUp({ navigation }) {
   const dispatch = useDispatch();
 
@@ -29,7 +41,14 @@ export default function SignUp({ navigation }) {
   const loading = useSelector(state => state.auth.loading);
 
   function handleSubmit() {
-    dispatch(signUpRequest(name, email, password));
+    schema
+      .validate({ name, email, password }, { abortEarly: false })
+      .then(function success() {
+        dispatch(signUpRequest(name, email, password));
+      })
+      .catch(function error(err) {
+        Alert.alert(err.errors[0]);
+      });
   }
 
   return (
@@ -85,3 +104,13 @@ export default function SignUp({ navigation }) {
     </Background>
   );
 }
+
+SignUp.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }),
+};
+
+SignUp.defaultProps = {
+  navigation: {},
+};
