@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as Yup from 'yup';
 
 import Background from '~/components/Background';
 import Header from '~/components/Header';
@@ -16,6 +18,28 @@ import {
   SubmitButton,
   LogoutButton,
 } from './styles';
+
+const schema = Yup.object().shape({
+  name: Yup.string().required('O nome é obrigatório.'),
+  email: Yup.string()
+    .email('Insira um e-mail válido.')
+    .required('O e-mail é obrigatório.'),
+  oldPassword: Yup.string(),
+  password: Yup.string().when('oldPassword', (oldPassword, field) =>
+    oldPassword
+      ? field
+          .required('Por favor, informe uma nova senha.')
+          .min(6, 'A nova senha deve conter no mínimo 6 caracteres.')
+      : field,
+  ),
+  confirmPassword: Yup.string().when('password', (password, field) =>
+    password
+      ? field
+          .required('Por favor, informe a confirmação de senha.')
+          .oneOf([Yup.ref('password')], 'A confirmação de senha não confere.')
+      : field,
+  ),
+});
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -39,15 +63,25 @@ export default function Profile() {
   }, [profile]);
 
   function handleSubmit() {
-    dispatch(
-      updateProfileRequest({
-        name,
-        email,
-        oldPassword,
-        password,
-        confirmPassword,
-      }),
-    );
+    schema
+      .validate(
+        { name, email, password, oldPassword, confirmPassword },
+        { abortEarly: false },
+      )
+      .then(function success() {
+        dispatch(
+          updateProfileRequest({
+            name,
+            email,
+            oldPassword,
+            password,
+            confirmPassword,
+          }),
+        );
+      })
+      .catch(function error(err) {
+        Alert.alert(err.errors[0]);
+      });
   }
 
   function handleLogout() {
