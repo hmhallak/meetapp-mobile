@@ -8,6 +8,7 @@ import { withNavigationFocus } from 'react-navigation';
 import api from '~/services/api';
 
 import Background from '~/components/Background';
+import Header from '~/components/Header';
 import Meetup from '~/components/Meetup';
 
 import { Container, List, Day, DayText, Loading } from './styles';
@@ -73,6 +74,7 @@ function Dashboard({ isFocused }) {
 
   return (
     <Background>
+      <Header />
       <Container>
         <Day>
           <TouchableOpacity onPress={handlePrevDay}>

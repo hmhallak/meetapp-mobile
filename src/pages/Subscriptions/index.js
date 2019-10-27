@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withNavigationFocus } from 'react-navigation';
-import { Alert, TouchableOpacity } from 'react-native';
+import { Alert, Text } from 'react-native';
 import api from '~/services/api';
 
 import { Container, List } from './styles';
 
 import Background from '~/components/Background';
+import Header from '~/components/Header';
 import Meetup from '~/components/Meetup';
 
 function Subscriptions({ isFocused }) {
@@ -41,18 +42,23 @@ function Subscriptions({ isFocused }) {
 
   return (
     <Background>
+      <Header />
       <Container>
-        <List
-          data={subscriptions}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => (
-            <Meetup
-              subscription
-              onCancel={() => handleCancel(item.id)}
-              data={item.Meetup}
-            />
-          )}
-        />
+        {subscriptions.length > 0 ? (
+          <List
+            data={subscriptions}
+            keyExtractor={item => String(item.id)}
+            renderItem={({ item }) => (
+              <Meetup
+                subscription
+                onCancel={() => handleCancel(item.id)}
+                data={item.Meetup}
+              />
+            )}
+          />
+        ) : (
+          <Text>Não há nenhuma inscrição.</Text>
+        )}
       </Container>
     </Background>
   );
