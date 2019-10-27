@@ -16,6 +16,8 @@ import { Container, List, Day, DayText } from './styles';
 function Dashboard({ isFocused }) {
   const [meetups, setMeetups] = useState([]);
   const [date, setDate] = useState(new Date());
+  const [meetupsCount, setMeetupsCount] = useState([]);
+  const [page, setPage] = useState(1);
 
   const dateFormatted = useMemo(
     () => format(date, "d 'de' MMMM", { locale: pt }),
@@ -25,16 +27,29 @@ function Dashboard({ isFocused }) {
   useEffect(() => {
     async function loadMeetups() {
       const response = await api.get('meetups', {
-        params: { date },
+        params: { date, page: 1 },
       });
 
       setMeetups(response.data);
+      setMeetupsCount(response.data.length);
     }
 
     if (isFocused) {
       loadMeetups();
     }
-  }, [date, isFocused]);
+  }, [date, isFocused]); // eslint-disable-line
+
+  async function loadMore() {
+
+    const response = await api.get('meetups', {
+      params: { date, page: page + 1 },
+    });
+
+    console.tron.log('loadmore!', response);
+    setMeetups([...meetups, ...response.data]);
+    setMeetupsCount(response.data.lenght);
+    setPage(page + 1);
+  }
 
   async function handleSubscribe(id) {
     try {
@@ -75,6 +90,8 @@ function Dashboard({ isFocused }) {
           renderItem={({ item }) => (
             <Meetup onSubscribe={() => handleSubscribe(item.id)} data={item} />
           )}
+          onEndReached={meetupsCount >= 10 ? loadMore : null}
+          onEndReachedThreshold={0.2}
         />
       </Container>
     </Background>
