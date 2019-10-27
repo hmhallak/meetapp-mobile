@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { formatRelative } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import pt from 'date-fns/locale/pt';
@@ -58,3 +59,16 @@ export default function Meetup({ data, onSubscribe, onCancel, subscription }) {
     </Container>
   );
 }
+
+Meetup.propTypes = {
+  data: PropTypes.shape().isRequired,
+  onSubscribe: PropTypes.func,
+  onCancel: PropTypes.func,
+  subscription: PropTypes.bool,
+};
+
+Meetup.defaultProps = {
+  onSubscribe: null,
+  onCancel: null,
+  subscription: false,
+};

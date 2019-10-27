@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { format, subDays, addDays } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { Alert, TouchableOpacity } from 'react-native';
@@ -106,6 +107,10 @@ Dashboard.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
     <Icon name="format-list-bulleted" size={20} color={tintColor} />
   ),
+};
+
+Dashboard.propTypes = {
+  isFocused: PropTypes.bool.isRequired,
 };
 
 export default withNavigationFocus(Dashboard);
