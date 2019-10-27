@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withNavigationFocus } from 'react-navigation';
-import { Alert, Text } from 'react-native';
+import { Alert } from 'react-native';
 import api from '~/services/api';
 
 import { Container, List } from './styles';
@@ -44,21 +44,17 @@ function Subscriptions({ isFocused }) {
     <Background>
       <Header />
       <Container>
-        {subscriptions.length > 0 ? (
-          <List
-            data={subscriptions}
-            keyExtractor={item => String(item.id)}
-            renderItem={({ item }) => (
-              <Meetup
-                subscription
-                onCancel={() => handleCancel(item.id)}
-                data={item.Meetup}
-              />
-            )}
-          />
-        ) : (
-          <Text>Não há nenhuma inscrição.</Text>
-        )}
+        <List
+          data={subscriptions}
+          keyExtractor={item => String(item.id)}
+          renderItem={({ item }) => (
+            <Meetup
+              subscription
+              onCancel={() => handleCancel(item.id)}
+              data={item.Meetup}
+            />
+          )}
+        />
       </Container>
     </Background>
   );
