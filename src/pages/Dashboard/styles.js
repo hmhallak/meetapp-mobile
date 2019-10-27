@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import { ActivityIndicator } from 'react-native';
+
 export const Container = styled.SafeAreaView`
   flex: 1;
 `;
@@ -23,4 +25,8 @@ export const DayText = styled.Text`
   align-self: center;
   font-weight: bold;
   margin: 0 10px;
+`;
+
+export const Loading = styled(ActivityIndicator)`
+  margin-bottom: 15px;
 `;

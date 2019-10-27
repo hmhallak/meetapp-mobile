@@ -11,13 +11,14 @@ import api from '~/services/api';
 import Background from '~/components/Background';
 import Meetup from '~/components/Meetup';
 
-import { Container, List, Day, DayText } from './styles';
+import { Container, List, Day, DayText, Loading } from './styles';
 
 function Dashboard({ isFocused }) {
   const [meetups, setMeetups] = useState([]);
   const [date, setDate] = useState(new Date());
   const [meetupsCount, setMeetupsCount] = useState([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const dateFormatted = useMemo(
     () => format(date, "d 'de' MMMM", { locale: pt }),
@@ -40,15 +41,15 @@ function Dashboard({ isFocused }) {
   }, [date, isFocused]); // eslint-disable-line
 
   async function loadMore() {
-
+    setLoading(true);
     const response = await api.get('meetups', {
       params: { date, page: page + 1 },
     });
 
-    console.tron.log('loadmore!', response);
     setMeetups([...meetups, ...response.data]);
     setMeetupsCount(response.data.lenght);
     setPage(page + 1);
+    setLoading(false);
   }
 
   async function handleSubscribe(id) {
@@ -93,6 +94,7 @@ function Dashboard({ isFocused }) {
           onEndReached={meetupsCount >= 10 ? loadMore : null}
           onEndReachedThreshold={0.2}
         />
+        {loading ? <Loading /> : null}
       </Container>
     </Background>
   );
