@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { parseISO, formatRelative } from 'date-fns';
+import { formatRelative } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import pt from 'date-fns/locale/pt';
 import Icon from 'react-native-vector-icons/MaterialIcons';
