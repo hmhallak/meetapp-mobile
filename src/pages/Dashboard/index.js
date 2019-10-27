@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { format, subDays, addDays } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import { utcToZonedTime } from 'date-fns-tz';
 import { Alert, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withNavigationFocus } from 'react-navigation';
